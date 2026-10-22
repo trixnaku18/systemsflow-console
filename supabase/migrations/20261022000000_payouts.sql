@@ -99,7 +99,7 @@ create table public.contractor_bank (
   contractor_id uuid primary key references public.contractor (id) on delete cascade,
   bank_name text not null default 'UnionBank',
   account_name text not null,
-  bank_ref text not null,          -- Vault secret id holding the account number
+  bank_ref uuid not null,          -- Vault secret id holding the account number
   fingerprint text not null,       -- HMAC of the account number, for duplicate/change checks
   updated_at timestamptz not null default now()
 );
