@@ -129,10 +129,13 @@ export function lintContent({ channel, copy, proof }: LintInput): LintResult {
       });
     }
   }
+  // A figure is backed when it is the entry's number or appears in its quotable result.
   const citedFigures = cleared.map((p) => normalize(p.number));
+  const citedResults = cleared.map((p) => normalize(p.result));
   for (const claim of findClaims(copy)) {
     const n = normalize(claim);
-    if (!citedFigures.some((f) => f.includes(n) || n.includes(f))) {
+    const backed = citedFigures.some((f) => f.includes(n) || n.includes(f)) || citedResults.some((r) => r.includes(n));
+    if (!backed) {
       issues.push({
         code: "uncited_claim",
         severity: "block",

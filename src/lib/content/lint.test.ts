@@ -51,6 +51,14 @@ describe("lintContent", () => {
     );
   });
 
+  it("accepts any figure that appears in the cited result", () => {
+    const copy = "One HVAC shop booked 38% more jobs in 60 days.";
+    expect(lintContent({ channel: "linkedin_cody", copy, proof: [proof] }).ok).toBe(true);
+    expect(codes(lintContent({ channel: "linkedin_cody", copy: "38% more jobs in 90 days.", proof: [proof] }))).toEqual([
+      "uncited_claim",
+    ]);
+  });
+
   it("finds money, multipliers and unit counts but not the offer's own facts", () => {
     expect(findClaims("Saved ₱45,000 and 12 hours a week, 3x faster, 40 leads.")).toEqual([
       "₱45,000",
